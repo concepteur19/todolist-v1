@@ -84,27 +84,17 @@ app.post('/', function(req, res) {
     });
 
     if(listName === "Today") {
-
-        if(nItem!=="") {
-            item.save();
-            res.redirect('/');
-        } else {
-            res.redirect('/');
-        }
+        item.save();
+        res.redirect('/');
 
     } else{
-
-        if(nItem !== "") {
-            List.findOne({name: listName}, function(err, foundItem) {
-                foundItem.items.push(item);
-                foundItem.save();
-                res.redirect('/'+ listName);
-            });
-            
-        }else {
+        List.findOne({name: listName}, function(err, foundItem) {
+            foundItem.items.push(item);
+            foundItem.save();
             res.redirect('/'+ listName);
-        }
+        });
     }
+    
 });
 
 app.post('/delete', function(req, res) {
