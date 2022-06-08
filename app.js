@@ -12,29 +12,16 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
 
-//connexion à la bd
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true});
+//connexion à la bd mongoDB Atlas
+mongoose.connect("mongodb+srv://admin-ConcepteurJS:zozoplus18@cluster0.mbt9c.mongodb.net/todolistDB", {useNewUrlParser: true});
+//mongodb+srv://admin-ConcepteurJS:<password>@cluster0.mbt9c.mongodb.net/databaseName
+//mongodb://localhost:27017
 
 const itemsSchema = new mongoose.Schema({
     name: String
 });
 
 const Item = mongoose.model("Item", itemsSchema);
-
-//const WorkItem = mongoose.model("WorkItem", itemsSchema);
-
-
-/*const item1 = new Item({
-    name: "LISTE DE TACHES"
-});
-
-const item2 = new Item({
-    name: "clique sur + pour ajouter une tache"
-});
-
-const item3 = new Item({
-    name: "<-- clique ici pour supp une tache"
-});*/
 
 let defaultItems = [];
 
