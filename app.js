@@ -50,9 +50,13 @@ app.get("/", function (req, res) {
 });
 
 app.get("/:customListName", function(req, res) {
+
+    //capitalize permit us to capitalise the first letter of the parameter typing by th user
     const customListName = _.capitalize(req.params.customListName);
     
     List.findOne({name : customListName}, function(err, foundList) {
+
+        // tcheck if there is an error when founding the list 
         if(!err) {
            if(!foundList) {
                //create a new list
@@ -63,7 +67,6 @@ app.get("/:customListName", function(req, res) {
 
                 list.save();                
                 res.redirect('/' + customListName)
-                //list.save();
            } else {
                // show the found list
                res.render("list", {listTitle: foundList.name, newListItems: foundList.items})
@@ -76,9 +79,12 @@ app.get("/:customListName", function(req, res) {
 
 app.post('/', function(req, res) {
     
+    // retrieve the value of the input that have the name of list
     const listName = req.body.list;
+    // retrieve the value of the input that have the name of newItem
     const nItem = req.body.newItem;
 
+    // create instance of the model Item that use the item schema
     const item = new Item({
         name : nItem
     });
@@ -88,6 +94,8 @@ app.post('/', function(req, res) {
         res.redirect('/');
 
     } else{
+        // findOne permit us to look throught the lists collection 
+        // to find a specific list that have a name of the string in the const listName
         List.findOne({name: listName}, function(err, foundItem) {
             foundItem.items.push(item);
             foundItem.save();
@@ -116,6 +124,9 @@ app.post('/delete', function(req, res) {
             }
         });
     } else {
+        //fibdOneAndUpdate permit us to find a particular list in 
+        //the lists collection and modify  it (her the modification 
+        //is to remove/delete and item of that list by using its id)
         List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkId}}}, function(err, foundList) {
             if(!err){ 
                 res.redirect("/" + listName);
